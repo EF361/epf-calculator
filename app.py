@@ -467,20 +467,6 @@ if "incomes" not in st.session_state:
 # Sidebar for global controls and app information
 with st.sidebar:
     st.markdown(f"### {t['controls']}")
-    if st.button(t["add_income"], use_container_width=True):
-        label_text = f"Income Source {len(st.session_state.incomes) + 1}" if lang_sel == "English" else f"收入来源 {len(st.session_state.incomes) + 1}"
-        st.session_state.incomes.append({
-            "label": label_text,
-            "salary": 3000.0,
-            "citizenship": "Malaysian Citizen",
-            "age_group": "Under 60 years"
-        })
-        st.rerun()
-        
-    if len(st.session_state.incomes) > 1:
-        if st.button(t["clear_all"], use_container_width=True):
-            st.session_state.incomes = [st.session_state.incomes[0]]
-            st.rerun()
             
     st.markdown("---")
     st.markdown(f"### {t['official_doc']}")
@@ -548,7 +534,7 @@ with tab_calc:
             with st.container(border=True):
                 # Layout redesign: 2 rows to give dropdowns full visibility without truncation
                 r1_c1, r1_c2 = st.columns([1, 1])
-                r2_c1, r2_c2, r2_c3 = st.columns([2, 2, 0.5])
+                r2_c1, r2_c2 = st.columns([1, 1])
                 
                 if lang_sel == "中文":
                     citizen_options = citizen_options_zh
@@ -585,48 +571,15 @@ with tab_calc:
                         key=f"age_{idx}"
                     )
                     inc["age_group"] = age_options_en[age_options.index(new_age_display)]
-                with r2_c3:
-                    st.markdown("<br>", unsafe_allow_html=True)
-                    if len(st.session_state.incomes) > 1:
-                        if st.button("🗑️", key=f"del_{idx}", use_container_width=True):
-                            st.session_state.incomes.pop(idx)
-                            st.rerun()
             
         # Action Buttons
-        col_btn_search, col_btn_action = st.columns([1, 1])
-        with col_btn_search:
-            search_text = "🔍 Search Document" if lang_sel == "English" else "🔍 搜索参考文档"
-            if st.button(search_text, type="primary", use_container_width=True):
-                st.toast("Updating reference document..." if lang_sel == "English" else "正在更新参考文档...", icon="🔍")
-        with col_btn_action:
-            if st.button(t["add_income"], key="inline_add", use_container_width=True):
-                label_text = f"Income Source {len(st.session_state.incomes) + 1}" if lang_sel == "English" else f"收入来源 {len(st.session_state.incomes) + 1}"
-                st.session_state.incomes.append({
-                    "label": label_text,
-                    "salary": 3000.0,
-                    "citizenship": "Malaysian Citizen",
-                    "age_group": "Under 60 years"
-                })
-                st.rerun()
+        search_text = "🔍 Search Document" if lang_sel == "English" else "🔍 搜索参考文档"
+        if st.button(search_text, type="primary", use_container_width=True):
+            st.toast("Updating reference document..." if lang_sel == "English" else "正在更新参考文档...", icon="🔍")
 
-        # (Table removed as per user request to simplify UI)
-
-    with col_right:
-        st.markdown(f"### {t['live_pdf_title']}")
+        active_item = calculated_items[0]
         
-        # Selected income dropdown
-        if len(calculated_items) > 1:
-            active_idx = st.selectbox(
-                t["select_highlight"],
-                options=range(len(calculated_items)),
-                format_func=lambda i: f"{calculated_items[i]['label']}"
-            )
-        else:
-            active_idx = 0
-            
-        active_item = calculated_items[active_idx]
-        
-        # Details container
+        # Details container moved to left column
         bracket_range_disp = active_item['bracket_range']
         if active_item['is_flat']:
             if "Flat 2%" in active_item['bracket_range']:
@@ -648,6 +601,9 @@ with tab_calc:
             </p>
         </div>
         """, unsafe_allow_html=True)
+
+    with col_right:
+        st.markdown(f"### {t['live_pdf_title']}")
         
         # Render page
         with st.spinner("Generating document reference..."):
