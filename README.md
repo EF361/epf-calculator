@@ -1,107 +1,84 @@
-# EPF Calculator ![Status](https://img.shields.io/badge/Status-Active-brightgreen) ![Build](https://img.shields.io/badge/Build-Passing-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue)
-
-> Accurate, simple, and reliable EPF contribution calculator.
-
----
+# EPF Calculator ![Python](https://img.shields.io/badge/Python-3.9%2B-blue) ![Status](https://img.shields.io/badge/Status-Active-brightgreen) ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 ## 🚀 Business Value
 
-The **EPF Calculator** streamlines the process of calculating Employee Provident Fund (EPF) contributions for organizations, HR professionals, and small businesses. By automating what is traditionally a time-consuming manual process, this tool ensures compliance with EPF regulations while saving time and reducing errors.
+Managing Employee Provident Fund (EPF) contributions can be a tedious, error-prone process for payroll teams and HR professionals. **EPF Calculator** is a highly accurate, lightning-fast tool designed to eliminate calculation mistakes and streamline EPF contribution workflows.
 
-Imagine you're running a business or managing payroll—it’s critical to ensure accurate EPF deductions, but doing it manually can be tedious and prone to mistakes. This calculator solves that problem in seconds, automating complex calculations with precision and efficiency.
+With **EPF Calculator**, you’ll:
+- Save hours by automating complex EPF breakdowns.
+- Avoid compliance risks due to incorrect contributions.
+- Enjoy seamless usability (coming soon: web-based UI for access across all devices).
+
+Whether you’re a payroll manager or a small business owner, this tool simplifies financial calculations, giving you the confidence to focus on what matters most—your team.
 
 ---
 
 ## 🛠️ Tech Stack
 
-This project is built using:
-
-- **Python**: A highly versatile and robust programming language, ideal for performing complex financial calculations efficiently.
+- **Python (3.9+)**: Core engine to deliver ultra-fast and error-proof EPF calculations.
+- **Flask** (Upcoming): Lightweight backend to power the forthcoming web-based UI.
+- **HTML/CSS/JavaScript** (Planned): Fully responsive user interface to enhance accessibility and usability.
 
 ---
 
 ## ⚙️ How It Works
 
-The EPF Calculator uses a simple yet powerful logic to break down the EPF contribution process into manageable slices:
+#### Core Calculation Logic
+1. **Input variables**: Users input required parameters such as employee salary and contribution rates.
+2. **Error validation**: Automatic checks ensure all inputs are valid and compliant with EPF standards.
+3. **Calculation**: Using Python’s high-performance data handling, the tool computes:
+   - Employee Contribution
+   - Employer Contribution
+   - Total EPF Payment
+4. **Output generation**: Results are immediately provided with precision.
 
-1. **Input Requirements**: 
-   - Employee's basic salary.
-   - Any applicable bonuses or special allowances.
-   - Current EPF contribution rates (for employer and employee).
-
-2. **Logical Calculation**: 
-   - Using preset or customizable percentages, the calculator computes monthly EPF contributions for both parties.
-   - Supports edge cases like salary caps, contribution exemptions, or additional voluntary contributions.
-
-3. **Clear Outputs**:
-   - Outputs are presented in a structured format, detailing employer's share, employee's share, and total contribution. 
-
-This calculator is flexible enough to adapt to different regional EPF systems, ensuring usability across diverse organizations.
+#### Upcoming Web UI
+The upcoming web-based interface will extend the tool’s accessibility. Users will gain the ability to:
+- Seamlessly input data from any device, eliminating the need for local Python installations.
+- View results in a visually intuitive dashboard.
+- Export calculations to shareable formats (e.g., CSV, PDF).
 
 ---
 
-## 🔧 Setup
+### 📈 Coming Next
 
-Follow these steps to set up and run the EPF Calculator:
+- [ ] Responsive web-based interface powered by Flask.
+- [ ] API integrations for third-party payroll platforms.
+- [ ] Support for country-specific EPF rules and custom configurations.
+
+---
+
+## 💡 Quick Start
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/epf-calculator.git
+   git clone https://github.com/EF361/epf-calculator.git
    ```
-
 2. Navigate to the project directory:
    ```bash
    cd epf-calculator
    ```
-
-3. Install necessary dependencies:
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-
-4. Run the calculator:
+4. Run the EPF calculation script:
    ```bash
-   python epf_calculator.py
+   python main.py
    ```
 
 ---
 
-## 📈 Example Usage
+### 🤝 Contributions
 
-Simplify payroll management in just a few lines of input. Here's an example:
-
-```python
-# Sample Input
-basic_salary = 50000
-bonus = 10000
-employee_rate = 12  # in percent
-employer_rate = 12  # in percent
-
-# Output
-Employee contribution: ₹7200
-Employer contribution: ₹7200
-Total EPF contribution: ₹14400
-```
+We welcome contributions to enhance accuracy, usability, and accessibility! Feel free to open an issue or submit a pull request if you have ideas for further improvement.
 
 ---
 
-## 🤝 Contributing
+### 📜 License
 
-We welcome contributions to improve the EPF Calculator! Feel free to submit issues or PRs to help us enhance functionality or accommodate additional EPF regulations.
-
-1. Fork the repository.
-2. Create a new feature branch:
-   ```bash
-   git checkout -b feature/your-feature
-   ```
-3. Commit your changes and open a Pull Request with a description of your work.
+This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code within the bounds of the license.
 
 ---
 
-## 📜 License
-
-This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE) file for more details.
-
----
-
-**Crafted with precision by experts in Payroll Automation and Financial Tech.**
+**Built with Precision & Passion by EF361**
