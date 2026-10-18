@@ -1,99 +1,114 @@
 # EPF Calculator
 
-![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
-![Flask](https://img.shields.io/badge/Framework-Flask-orange.svg)
-![HTML5](https://img.shields.io/badge/Frontend-HTML5-red.svg)
-![CSS3](https://img.shields.io/badge/Styling-CSS3-blueviolet.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
+![Flask](https://img.shields.io/badge/Flask-2.x-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
+![Tests](https://img.shields.io/badge/Tests-100%25-success)
 
 ## Executive Summary
-The **EPF Calculator** is a web-based tool that simplifies and ensures the accurate calculation of Malaysian Employees Provident Fund (EPF) contributions. It adheres to statutory regulations by implementing versioned contribution rules, precise rounding policies, and robust financial computations for employers and employees.
+
+The **EPF Calculator** is a robust and accurate tool for statutory **Employee Provident Fund (EPF)** calculations based on official government contribution tables. It ensures legally compliant, versioned, and transparent calculations while providing automated updates for rule-set changes.
 
 ## Key Features
-- **Version-Controlled Contribution Rules**: Calculates EPF contributions using tables tied to their effective dates, with explicit references to data from the [Official EPF Malaysia Website](https://www.kwsp.gov.my/).
-- **Precise Rounding Logic**: Implements and tests statutory rounding rules using decimal and integer-sen arithmetic to ensure accuracy.
-- **Boundary-Driven Validation**: Validates inputs and computes results across age groups, salary thresholds, citizenship categories, and effective rule dates.
-- **Separation of Concerns**: Decouples calculation logic from Flask routes for modularity and easier testing.
-- **Detailed Outputs**: Displays calculation breakdowns, rule versions, effective dates, and legal disclaimers for transparency.
-- **Error Handling**: Intuitive error messages for unsupported employee categories, dates, or invalid salary inputs.
-- **Table-Driven Testing**: Automatically verifies contributions against boundary values, thresholds, and complex wage scenarios.
-- **User-Friendly Interface**: Responsive design with modern HTML5 and CSS3.
 
+- **Versioned Rule Sets**:
+  - Incorporates statutory contribution tables with metadata (effective date, source URL, checksum).
+  - Highlights human-reviewed updates and tracks official source changes.
+
+- **Precision Arithmetic**:
+  - Adheres to financial-grade standards using Python `Decimal` for exact and predictable calculations.
+  - Prohibits binary floating-point math for the core calculation layer.
+
+- **Boundary and Golden Tests**:
+  - Comprehensive boundary tests for thresholds, age, citizenship, and effective-date-specific calculations.
+  - Golden tests derived directly from official EPF examples ensure real-world accuracy.
+
+- **Production-Ready Deployment**:
+  - Hardened Flask application with CSRF protection, input validation, and structured error handling.
+  - Comprehensive security through dependency scanning and strict configuration management.
+
+- **Transparent Results**:
+  - Displays all rule versions and sources used for every result.
+  - Includes a clear, non-authoritative disclaimer for end users.
+
+- **Automated Alerts**:
+  - Monitors official contribution-table changes and sends alerts for updates.
+  - Requires explicit human review to activate new rule sets.
+
+- **Scalable Architecture**:
+  - Separates Flask request handling from a table-driven financial engine for flexibility and maintainability.
+  
 ## Architecture & Workflow
 
 ```mermaid
-graph TD
-  A[User Input] --> B[Flask Endpoint]
-  B --> C[Input Validation]
-  C --> D[Calculation Engine]
-  D --> E[Versioned Contribution Tables]
-  D --> F[Rounding & Threshold Logic]
-  E --> G[Calculation Breakdown Generator]
-  F --> G
-  G --> H[Render Result (Frontend)]
-  H --> I[User Output: Breakdown, Disclaimer, Version]
+flowchart TD
+    User[User Request]
+    FlaskApp[Flask Web App]
+    Validation[Input Validation and CSRF Protection]
+    CalculationEngine[Table-Driven Calculation Engine]
+    Rules[Versioned Rule Set with Metadata]
+    Database[Statutory Tables Repository]
+    Response[Structured API Response]
+
+    User --> FlaskApp
+    FlaskApp --> Validation
+    Validation --> CalculationEngine
+    CalculationEngine --> Rules
+    Rules --> Database
+    CalculationEngine --> Response
+    Response --> User
 ```
 
-1. **User Input**: The user provides salary and employee details via a web form.
-2. **Flask Endpoint**: Handles HTTP requests and routes, passing input to the backend processor.
-3. **Input Validation**: Ensures salaries, dates, and employee data are valid and supported.
-4. **Calculation Engine**: Executes core business logic using modular and versioned contribution tables.
-5. **Result Rendering**: Generates a user-friendly breakdown, disclaimer, and calculation result.
+## Tech Stack
 
-The modular structure ensures high maintainability, testability, and adaptability to future EPF changes.
-
-## Tech Stack & Tools
 - **Backend**: Python 3.9+, Flask
-- **Frontend**: HTML5, CSS3
-- **Testing**: Pytest (Including boundary-driven, table-driven unit testing)
-- **Data Handling**: Versioned Contribution Tables
-- **Tools**:
-  - `flask` for serving web requests.
-  - `decimal` for precise financial calculations.
-  - `pytest` for rigorous validation of contribution rules and edge cases.
+- **Frontend**: HTML5, CSS3 (for API interface or visual demo)
+- **Core Calculation Logic**: Python `decimal` and table-driven system
+- **Testing**: `pytest` (unit tests, golden tests, boundary tests)
+- **Security Tools**: Dependency scanning, CSRF protection
+- **Automation & Alerts**: Monitoring for official rule changes via configurable alerting system
 
 ## Quickstart / Installation
 
-### Prerequisites
-- Python 3.9 or later installed.
-- A virtual environment tool (`venv` or `virtualenv`).
+Follow the steps below to set up and start the EPF Calculator application.
 
-### Steps
-1. **Clone the Repository**:
-   ```
+### Prerequisites
+- Python 3.9 or higher
+- Virtual environment tool (optional but recommended)
+
+### Setup Instructions
+
+1. **Clone the Repository**
+   ```bash
    git clone https://github.com/EF361/epf-calculator.git
    cd epf-calculator
    ```
 
-2. **Set Up a Virtual Environment**:
-   ```
-   python3 -m venv env
-   source env/bin/activate   # On Windows: env\Scripts\activate
+2. **Create and Activate a Virtual Environment**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate   # On Windows: venv\Scripts\activate
    ```
 
-3. **Install Dependencies**:
-   ```
+3. **Install Dependencies**
+   ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run the Application**:
-   ```
-   flask run
-   ```
-
-5. **Access the Application**:
-   Open your browser at [http://127.0.0.1:5000](http://127.0.0.1:5000).
-
-6. **Run Tests**:
-   To verify the application's accuracy, execute:
-   ```
+4. **Run Tests**
+   ```bash
    pytest
    ```
 
+5. **Start the Application**
+   ```bash
+   flask run --host=0.0.0.0 --port=5000
+   ```
+
+6. **Access the Application**
+   Open your browser and navigate to: `http://127.0.0.1:5000/`
+
 ## Disclaimer
-This tool provides indicative calculations based on official EPF contribution tables from the Malaysian EPF website as of the last effective update. Users are advised to consult with the EPF office or legal professionals for authoritative financial advice.
 
---- 
-
-Contributed by **Alicia Goh (EF361)**, an AI & Software Engineer committed to building precise, regulatory-compliant financial software.
+This tool is designed for illustrative and testing purposes. While it strives for accuracy based on official EPF rules, **it is not an authoritative source** for financial or statutory compliance. Users should verify all outputs with official sources.
