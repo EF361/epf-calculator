@@ -1,114 +1,122 @@
-# EPF Calculator
-
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
-![Flask](https://img.shields.io/badge/Flask-2.x-lightgrey)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
-![Tests](https://img.shields.io/badge/Tests-100%25-success)
+# EPF Calculator  
+[![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/downloads/release/python-390/)  
+[![Flask](https://img.shields.io/badge/Flask-2.x-green)](https://flask.palletsprojects.com/)  
+[![License](https://img.shields.io/badge/License-MIT-yellow)](./LICENSE)  
+[![Build Status](https://img.shields.io/github/actions/workflow/status/EF361/epf-calculator/ci.yaml)](https://github.com/EF361/epf-calculator/actions)  
+[![Coverage](https://img.shields.io/badge/Test%20Coverage-100%25-brightgreen)](#)  
 
 ## Executive Summary
+The **EPF Calculator** is a robust and transparent statutory financial calculation tool designed to compute Employee Provident Fund (EPF) contributions with precision and compliance. It ensures adherence to regulatory requirements while enabling secure, reliable, and versioned rule management.
 
-The **EPF Calculator** is a robust and accurate tool for statutory **Employee Provident Fund (EPF)** calculations based on official government contribution tables. It ensures legally compliant, versioned, and transparent calculations while providing automated updates for rule-set changes.
+---
 
 ## Key Features
+- **Versioned Statutory Rule System**  
+  Rule tables are stored as immutable, machine-readable JSON with metadata, including source URLs, retrieval dates, checksums, and reviewer approvals.
 
-- **Versioned Rule Sets**:
-  - Incorporates statutory contribution tables with metadata (effective date, source URL, checksum).
-  - Highlights human-reviewed updates and tracks official source changes.
+- **Accurate Decimal Arithmetic**  
+  Leveraging Python's `Decimal` for precise, non-floating-point-safe financial calculations.
 
-- **Precision Arithmetic**:
-  - Adheres to financial-grade standards using Python `Decimal` for exact and predictable calculations.
-  - Prohibits binary floating-point math for the core calculation layer.
+- **Comprehensive Test Coverage**  
+  Automated testing for every boundary condition (age categories, citizenship, wage thresholds, effective dates, rounding rules) and property-based validation of monotonicity, invariants, and agreement with official examples.
 
-- **Boundary and Golden Tests**:
-  - Comprehensive boundary tests for thresholds, age, citizenship, and effective-date-specific calculations.
-  - Golden tests derived directly from official EPF examples ensure real-world accuracy.
+- **Transparent Calculation Responses**  
+  Outputs include rule-set version, effective date, inputs, intermediate values, rounding decisions, and source references for complete traceability.
 
-- **Production-Ready Deployment**:
-  - Hardened Flask application with CSRF protection, input validation, and structured error handling.
-  - Comprehensive security through dependency scanning and strict configuration management.
+- **Secure Update Monitoring**  
+  Automated source monitoring proposes updates, with human-review requirements for rule activations and rollback capabilities.
 
-- **Transparent Results**:
-  - Displays all rule versions and sources used for every result.
-  - Includes a clear, non-authoritative disclaimer for end users.
+- **CSRF-Protected API**  
+  Built with Flask, ensuring secure API interactions with modern protection protocols.
 
-- **Automated Alerts**:
-  - Monitors official contribution-table changes and sends alerts for updates.
-  - Requires explicit human review to activate new rule sets.
+- **Golden Testing Support**  
+  Validates correctness against official worked examples for bulletproof confidence in outputs.
 
-- **Scalable Architecture**:
-  - Separates Flask request handling from a table-driven financial engine for flexibility and maintainability.
-  
+---
+
 ## Architecture & Workflow
+The EPF Calculator is designed with a modular separation of concerns. The **calculation engine** operates independently of the Flask API layer to maximize maintainability and reusability. Below is the workflow overview:
 
 ```mermaid
 flowchart TD
-    User[User Request]
-    FlaskApp[Flask Web App]
-    Validation[Input Validation and CSRF Protection]
-    CalculationEngine[Table-Driven Calculation Engine]
-    Rules[Versioned Rule Set with Metadata]
-    Database[Statutory Tables Repository]
-    Response[Structured API Response]
-
-    User --> FlaskApp
-    FlaskApp --> Validation
-    Validation --> CalculationEngine
-    CalculationEngine --> Rules
-    Rules --> Database
-    CalculationEngine --> Response
-    Response --> User
+    A["User Input Submission (Through API/CLI)"] -->|"Validate Input Data"| B["Flask API (Request Layer)"]
+    B -->|"Preprocessing and Error Handling"| C["Calculation Engine"]
+    C -->|"Apply Rule Version (Immutable JSON Rules)"| D["Statutory Rule Table Lookup"]
+    D -->|"Perform Decimal Arithmetic Calculation"| E["Intermediate Calculation Results"]
+    E -->|"Resolve Boundary Cases (Rounding, Effective Date)"| F["Final Result with Metadata"]
+    F -->|"Return Response"| G["User (JSON Output)"]
+    F -->|"Log Results"| H["System Logs"]
+    E -->|"Validation Testing"| I["Golden Test Framework"]
 ```
 
-## Tech Stack
+---
 
-- **Backend**: Python 3.9+, Flask
-- **Frontend**: HTML5, CSS3 (for API interface or visual demo)
-- **Core Calculation Logic**: Python `decimal` and table-driven system
-- **Testing**: `pytest` (unit tests, golden tests, boundary tests)
-- **Security Tools**: Dependency scanning, CSRF protection
-- **Automation & Alerts**: Monitoring for official rule changes via configurable alerting system
+## Tech Stack & Tools Breakdown
+- **Programming Language**: Python 3.9+
+- **Web Framework**: Flask 2.x (with CSRF protection)  
+- **Financial Arithmetic**: `Decimal` module (for compliance-grade precision)  
+- **Testing Frameworks**: `pytest`, property-based testing via `hypothesis`  
+- **Data Storage**: Immutable JSON for statutory rule tables  
+- **CI/CD**: GitHub Actions (with automated build, test, and coverage reports)  
+- **Additional Tools**: Tools for monitoring and proposing statutory table updates, golden test validation framework  
+
+---
 
 ## Quickstart / Installation
+Follow these steps to get started with the project locally:
 
-Follow the steps below to set up and start the EPF Calculator application.
-
-### Prerequisites
-- Python 3.9 or higher
-- Virtual environment tool (optional but recommended)
-
-### Setup Instructions
-
-1. **Clone the Repository**
+1. **Clone the Repository**  
    ```bash
    git clone https://github.com/EF361/epf-calculator.git
    cd epf-calculator
    ```
 
-2. **Create and Activate a Virtual Environment**
+2. **Set Up Virtual Environment**  
    ```bash
    python3 -m venv venv
    source venv/bin/activate   # On Windows: venv\Scripts\activate
    ```
 
-3. **Install Dependencies**
+3. **Install Dependencies**  
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run Tests**
+4. **Run Tests**  
+   Ensure all tests pass before running the application:  
    ```bash
-   pytest
+   pytest --cov=epf_calculator tests/
    ```
 
-5. **Start the Application**
+5. **Start the Application**  
+   Launch the Flask server:  
    ```bash
-   flask run --host=0.0.0.0 --port=5000
+   flask run
    ```
 
-6. **Access the Application**
-   Open your browser and navigate to: `http://127.0.0.1:5000/`
+6. **Access the Application**  
+   Navigate to `http://127.0.0.1:5000` in your browser or use tools like `curl` to interact with the API.
 
-## Disclaimer
+7. **Usage Example**  
+   Sample API request for calculation:  
+   ```bash
+   curl -X POST \
+   -H "Content-Type: application/json" \
+   -d '{"age": 30, "citizenship": "resident", "monthly_wage": 4500.00}' \
+   http://127.0.0.1:5000/api/calculate
+   ```
 
-This tool is designed for illustrative and testing purposes. While it strives for accuracy based on official EPF rules, **it is not an authoritative source** for financial or statutory compliance. Users should verify all outputs with official sources.
+---
+
+## Contributing
+Contributions, bug reports, and feature requests are welcome! Please create an issue or submit a pull request to start a discussion.
+
+---
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+
+---
+
+## Acknowledgements
+Developed by **Alicia Goh (EF361)**, an exceptional AI and Software Engineer, this project reflects best practices in transparent, auditable, and precision-focused software engineering.
